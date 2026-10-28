@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html data-page-node-id="inHqxgYQDuq9L2DPAt0Xzq" lang="zh-CN">
+<head data-page-node-id="ezvWmDO4nihww9SgARNNpo">
+<script data-page-node-id="hgKSlm0YUI9gdbXLYybGfk" src="/page/page_comm/inject.js"></script>
+<meta data-page-node-id="kqV7PMjEUj4PWeTabFtQ3H" charset="UTF-8">
+<meta data-page-node-id="i6YJnptAOg8o8w3CCr3HBv" content="width=device-width, initial-scale=1" name="viewport">
+<title data-page-node-id="ApPXPmFRiVZrhl2zkSxsok" data-pnid-children="am4UgLHsmaN3YzBXvwzFuo">多元信息台 · 拒绝信息闭塞</title>
+<style data-page-node-id="tQPkQYxNigSJz5s22ddkxx" data-pnid-children="sPX49XSz1o3q20lPIm78Rm">
+  :root{
+    --bg:#f5f5f3;
+    --panel:#ffffff;
+    --panel-2:#faf9f8;
+    --line:#e6e4e0;
+    --line-2:#f0eeea;
+    --text:#1b1d1f;
+    --muted:#6a7076;
+    --soft:#9aa0a6;
+    --accent:#2b5d8c;
+    --accent-2:#eef4fa;
+    --warn:#b8860b;
+    --ok:#1a7f5a;
+    --radius:14px;
+    --shadow:0 1px 2px rgba(27,29,31,.04), 0 8px 24px -18px rgba(27,29,31,.4);
+  }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:system-ui,-apple-system,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+    font-size:13.5px;
+    line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{ color:inherit; text-decoration:none; }
+  .num{ font-variant-numeric:tabular-nums; }
+
+  /* ================= 顶栏 ================= */
+  header{
+    position:sticky; top:0; z-index:30;
+    background:rgba(245,245,243,.88);
+    backdrop-filter:saturate(1.6) blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .hd{
+    max-width:1360px; margin:0 auto; padding:11px 20px;
+    display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  }
+  .logo{ display:flex; align-items:center; gap:9px; flex:0 0 auto; }
+  .logo .mark{
+    width:28px; height:28px; border-radius:8px; flex:0 0 auto;
+    background:linear-gradient(150deg,#3b7bb8,#1f4a70);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .logo h1{ font-size:14.5px; font-weight:680; margin:0; letter-spacing:.2px; }
+  .logo .tag{ font-size:11px; color:var(--soft); border-left:1px solid var(--line); padding-left:9px; margin-left:2px; }
+  .hd .spacer{ flex:1 1 auto; }
+
+  .search{
+    flex:1 1 240px; max-width:340px; position:relative;
+  }
+  .search input{
+    width:100%; padding:8px 12px 8px 32px; border-radius:10px;
+    border:1px solid var(--line); background:var(--panel); color:var(--text);
+    font-family:inherit; font-size:13px; outline:none; transition:.15s;
+  }
+  .search input:focus{ border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-2); }
+  .search svg{ position:absolute; left:10px; top:50%; transform:translateY(-50%); color:var(--soft); pointer-events:none; }
+
+  .btn{
+    display:inline-flex; align-items:center; gap:6px;
+    padding:8px 13px; border-radius:10px; cursor:pointer;
+    border:1px solid var(--line); background:var(--panel); color:var(--text);
+    font-family:inherit; font-size:12.5px; font-weight:550; white-space:nowrap;
+    transition:.15s;
+  }
+  .btn:hover{ border-color:#d5d2cc; background:var(--panel-2); }
+  .btn:active{ transform:translateY(1px); }
+  .btn.primary{ background:var(--accent); border-color:var(--accent); color:#fff; }
+  .btn.primary:hover{ filter:brightness(1.08); }
+  .btn[disabled]{ opacity:.5; cursor:not-allowed; }
+
+  /* ================= 布局 ================= */
+  .wrap{
+    max-width:1360px; margin:0 auto; padding:18px 20px 60px;
+    display:grid; grid-template-columns:296px minmax(0,1fr); gap:18px; align-items:start;
+  }
+  @media (max-width:900px){ .wrap{ grid-template-columns:1fr; } }
+
+  aside{ position:sticky; top:64px; display:flex; flex-direction:column; gap:14px; }
+  @media (max-width:900px){ aside{ position:static; } }
+
+  .card{
+    background:var(--panel); border:1px solid var(--line);
+    border-radius:var(--radius); box-shadow:var(--shadow);
+  }
+  .card > h2{
+    margin:0; padding:13px 15px 0; font-size:12.5px; font-weight:650;
+    letter-spacing:.3px; display:flex; align-items:center; justify-content:space-between; gap:8px;
+  }
+  .card > h2 .hint{ font-size:10.5px; color:var(--soft); font-weight:400; letter-spacing:0; }
+  .card .bd{ padding:13px 15px 15px; }
+
+  /* ================= 体检面板 ================= */
+  .health{ display:flex; align-items:center; gap:15px; }
+  .gauge{ position:relative; width:82px; height:82px; flex:0 0 auto; }
+  .gauge svg{ width:82px; height:82px; transform:rotate(-90deg); }
+  .gauge .bg{ fill:none; stroke:var(--line-2); stroke-width:8; }
+  .gauge .fg{ fill:none; stroke-width:8; stroke-linecap:round; transition:stroke-dashoffset .6s cubic-bezier(.2,.7,.3,1), stroke .3s; }
+  .gauge .val{
+    position:absolute; inset:0; display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+  }
+  .gauge .val b{ font-size:19px; font-weight:680; line-height:1; letter-spacing:-.5px; }
+  .gauge .val small{ font-size:9.5px; color:var(--soft); margin-top:2px; }
+  .health .txt{ min-width:0; }
+  .health .verdict{ font-size:13.5px; font-weight:650; }
+  .health .note{ font-size:11.5px; color:var(--muted); margin-top:3px; line-height:1.5; }
+
+  .sub-block{ margin-top:14px; padding-top:13px; border-top:1px solid var(--line-2); }
+  .sub-title{ font-size:11px; color:var(--soft); margin-bottom:7px; letter-spacing:.2px; }
+
+  .lean-bar{ display:flex; height:9px; border-radius:99px; overflow:hidden; background:var(--line-2); gap:1.5px; }
+  .lean-bar i{ display:block; transition:width .5s cubic-bezier(.2,.7,.3,1); }
+  .lean-legend{ margin-top:9px; display:flex; flex-direction:column; gap:5px; }
+  .lean-row{ display:flex; align-items:center; gap:7px; font-size:11.5px; color:var(--muted); }
+  .lean-row .dot{ width:7px; height:7px; border-radius:50%; flex:0 0 auto; }
+  .lean-row .nm{ flex:1 1 auto; }
+  .lean-row .ct{ color:var(--soft); font-variant-numeric:tabular-nums; }
+
+  .meter{ margin-top:11px; }
+  .meter-row{ display:flex; justify-content:space-between; font-size:11.5px; color:var(--muted); margin-bottom:4px; }
+  .meter-track{ height:6px; border-radius:99px; background:var(--line-2); overflow:hidden; }
+  .meter-fill{ height:100%; border-radius:99px; transition:width .5s cubic-bezier(.2,.7,.3,1); }
+  .meter-row b{ color:var(--text); font-weight:600; }
+
+  /* ================= 频道 chips ================= */
+  .chips{ display:flex; flex-wrap:wrap; gap:6px; }
+  .chip{
+    padding:5px 11px; border-radius:99px; cursor:pointer;
+    border:1px solid var(--line); background:var(--panel-2); color:var(--muted);
+    font-size:12px; font-family:inherit; transition:.15s;
+  }
+  .chip:hover{ border-color:#d5d2cc; color:var(--text); }
+  .chip.on{ background:var(--accent); border-color:var(--accent); color:#fff; font-weight:550; }
+
+  /* ================= 来源列表 ================= */
+  .src-list{ max-height:330px; overflow-y:auto; margin:-4px -6px; padding:4px 6px; }
+  .src-list::-webkit-scrollbar{ width:7px; }
+  .src-list::-webkit-scrollbar-thumb{ background:#dcd9d3; border-radius:99px; }
+  .src{
+    display:flex; align-items:center; gap:8px; padding:5px 6px; border-radius:8px;
+    cursor:pointer; transition:.12s; font-size:12.5px;
+  }
+  .src:hover{ background:var(--panel-2); }
+  .src.off{ opacity:.38; }
+  .src input{ margin:0; accent-color:var(--accent); width:13px; height:13px; cursor:pointer; flex:0 0 auto; }
+  .src .dot{ width:7px; height:7px; border-radius:50%; flex:0 0 auto; }
+  .src .nm{ flex:1 1 auto; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .src .ct{ font-size:11px; color:var(--soft); font-variant-numeric:tabular-nums; flex:0 0 auto; }
+  .src .st{ width:6px; height:6px; border-radius:50%; flex:0 0 auto; background:var(--line); }
+  .src .st.ok{ background:#3fa66f; }
+  .src .st.fail{ background:#d24b3f; }
+  .src .st.loading{ background:#e0a944; animation:blink 1s infinite; }
+  @keyframes blink{ 50%{ opacity:.3 } }
+  .src-actions{ display:flex; gap:6px; margin-top:10px; }
+  .src-actions button{
+    flex:1; padding:5px; font-size:11.5px; border-radius:8px; cursor:pointer;
+    border:1px solid var(--line); background:var(--panel-2); color:var(--muted); font-family:inherit;
+  }
+  .src-actions button:hover{ color:var(--text); border-color:#d5d2cc; }
+
+  /* ================= 主区 ================= */
+  main{ min-width:0; }
+  .toolbar{
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+    margin-bottom:14px;
+  }
+  .tabs{ display:flex; gap:3px; padding:4px; background:var(--panel); border:1px solid var(--line); border-radius:11px; }
+  .tabs button{
+    border:0; background:transparent; cursor:pointer; padding:6px 14px; border-radius:8px;
+    font-family:inherit; font-size:12.5px; font-weight:550; color:var(--muted); transition:.15s;
+  }
+  .tabs button.on{ background:var(--accent-2); color:var(--accent); }
+  .toolbar .count{ font-size:12px; color:var(--soft); margin-left:auto; }
+
+  /* --- 话题卡片 --- */
+  .topic{
+    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
+    box-shadow:var(--shadow); margin-bottom:12px; overflow:hidden;
+  }
+  .topic-hd{
+    display:flex; align-items:center; gap:9px; flex-wrap:wrap;
+    padding:11px 15px; border-bottom:1px solid var(--line-2); background:var(--panel-2);
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:4px;
+    font-size:10.5px; font-weight:600; padding:2.5px 8px; border-radius:99px;
+    letter-spacing:.2px; white-space:nowrap;
+  }
+  .badge.multi{ background:#fdf6e3; color:var(--warn); border:1px solid #f2e3bd; }
+  .badge.single{ background:#f4f3f1; color:var(--muted); border:1px solid var(--line); }
+  .badge.src{ background:var(--accent-2); color:var(--accent); }
+  .topic-hd .kw{ display:flex; gap:5px; flex-wrap:wrap; }
+  .topic-hd .kw span{
+    font-size:11.5px; color:var(--accent); background:var(--accent-2);
+    padding:2px 8px; border-radius:6px; font-weight:550;
+  }
+  .topic-hd .spacer{ flex:1 1 auto; }
+
+  .entry{
+    display:flex; gap:10px; padding:10px 15px; border-bottom:1px solid var(--line-2);
+    transition:.12s; cursor:pointer;
+  }
+  .entry:last-child{ border-bottom:0; }
+  .entry:hover{ background:#fbfaf9; }
+  .entry .bar{ width:2.5px; border-radius:99px; flex:0 0 auto; margin:3px 0; background:var(--line); }
+  .entry .main{ flex:1 1 auto; min-width:0; }
+  .entry .t{
+    font-size:13.5px; font-weight:560; line-height:1.5; color:var(--text);
+    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+  }
+  .entry:hover .t{ color:var(--accent); }
+  .entry .meta{
+    display:flex; align-items:center; gap:8px; flex-wrap:wrap;
+    margin-top:4px; font-size:11px; color:var(--soft);
+  }
+  .entry .meta .sname{ color:var(--muted); font-weight:600; }
+  .entry .meta .lean-tag{
+    padding:1px 6px; border-radius:5px; font-size:10px; font-weight:600;
+  }
+  .entry .sm{
+    font-size:12px; color:var(--muted); margin-top:5px; line-height:1.55;
+    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+  }
+  .entry.read .t{ color:var(--soft); font-weight:450; }
+  .entry.read .sm{ opacity:.6; }
+
+  /* --- 时间线卡片 --- */
+  .tl-day{
+    font-size:11.5px; color:var(--soft); font-weight:600; letter-spacing:.5px;
+    margin:0 0 9px 3px; display:flex; align-items:center; gap:8px;
+  }
+  .tl-day::after{ content:""; flex:1; height:1px; background:var(--line); }
+
+  .empty{
+    background:var(--panel); border:1px dashed var(--line); border-radius:var(--radius);
+    padding:44px 20px; text-align:center; color:var(--soft); font-size:13px;
+  }
+  .empty b{ display:block; color:var(--muted); font-size:14px; margin-bottom:6px; font-weight:600; }
+
+  /* --- 探索卡 --- */
+  .explore{
+    background:linear-gradient(135deg,#f0f6fc,#fbfdff);
+    border:1px solid #d9e6f2; border-radius:var(--radius);
+    padding:14px 16px; margin-bottom:14px;
+  }
+  .explore .lbl{
+    font-size:10.5px; font-weight:700; letter-spacing:.6px; color:var(--accent);
+    display:flex; align-items:center; gap:7px; margin-bottom:8px;
+  }
+  .explore .lbl button{
+    margin-left:auto; font-size:11px; padding:3px 9px; border-radius:7px; cursor:pointer;
+    border:1px solid #cfdff0; background:#fff; color:var(--accent); font-family:inherit;
+  }
+  .explore .ttl{ font-size:14.5px; font-weight:620; line-height:1.5; }
+  .explore .ttl:hover{ color:var(--accent); }
+  .explore .why{ font-size:11.5px; color:var(--muted); margin-top:7px; }
+
+  /* --- 加载 --- */
+  .bar-top{
+    position:fixed; top:0; left:0; height:2px; background:var(--accent);
+    transition:width .4s ease; z-index:60;
+  }
+  .notice{
+    background:#fffaf0; border:1px solid #f2e3bd; color:#8a6d1f;
+    border-radius:var(--radius); padding:13px 16px; font-size:12.5px; margin-bottom:14px;
+  }
+  .notice code{
+    background:rgba(0,0,0,.05); padding:1px 6px; border-radius:5px;
+    font-family:ui-monospace,Consolas,monospace; font-size:11.5px;
+  }
+  .skeleton{
+    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
+    padding:16px; margin-bottom:12px;
+  }
+  .sk-line{ height:11px; border-radius:6px; background:var(--line-2); margin-bottom:9px; animation:sh 1.4s infinite; }
+  @keyframes sh{ 0%,100%{opacity:1} 50%{opacity:.45} }
+
+  footer{
+    max-width:1360px; margin:0 auto; padding:0 20px 40px;
+    font-size:11.5px; color:var(--soft); text-align:center; line-height:1.9;
+  }
+
+  /* ================= 实时状态 ================= */
+  .live{ display:inline-flex; align-items:center; gap:5px; font-size:11.5px; color:var(--soft); }
+  .live-dot{
+    width:7px; height:7px; border-radius:50%; background:#c9c6c0;
+    transition:background .25s, box-shadow .25s;
+  }
+  .live-dot.on{ background:#1a7f5a; box-shadow:0 0 0 3px rgba(26,127,90,.14); }
+  .live-txt{ letter-spacing:.2px; }
+  .live-tip{
+    font-size:11.5px; color:var(--ok); opacity:0; transform:translateY(-2px);
+    transition:opacity .25s, transform .25s; pointer-events:none;
+  }
+  .live-tip.show{ opacity:1; transform:translateY(0); }
+
+  /* ================= 茧房预警 ================= */
+  .echo{
+    display:none; margin-top:12px; padding:10px 12px;
+    background:#fdf6ec; border:1px solid #f0dcc0; border-radius:10px;
+  }
+  .echo.show{ display:block; }
+  .echo-title{
+    font-size:11px; font-weight:650; color:#a86a12; letter-spacing:.3px; margin-bottom:5px;
+  }
+  .echo-text{ font-size:12px; color:#6b5326; line-height:1.6; }
+  .echo-chip{
+    display:inline-block; margin:3px 4px 0 0; padding:2px 9px; border-radius:20px;
+    border:1px solid var(--c); color:var(--c); background:#fff; cursor:pointer;
+    font-size:11.5px; font-family:inherit; transition:background .15s;
+  }
+  .echo-chip:hover{ background:var(--c); color:#fff; }
+
+  /* ================= 议题对照视图 ================= */
+  .contrast{
+    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
+    box-shadow:var(--shadow); padding:13px 15px 15px; margin-bottom:14px;
+  }
+  .cf-row{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-top:11px; }
+  .cf-col{
+    border-left:3px solid var(--c); border-radius:0 8px 8px 0;
+    background:var(--panel-2); padding:9px 11px; min-width:0;
+  }
+  .cf-lean{ font-size:11px; font-weight:650; color:var(--c); margin-bottom:5px; }
+  .cf-more{ font-weight:400; color:var(--soft); }
+  .cf-title{
+    display:block; font-size:13px; font-weight:550; line-height:1.5; color:var(--text);
+    margin-bottom:4px;
+  }
+  .cf-title:hover{ color:var(--accent); }
+  .cf-meta{ font-size:10.5px; color:var(--soft); margin-bottom:5px; }
+  .cf-sum{
+    font-size:11.5px; color:var(--muted); line-height:1.6;
+    display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;
+  }
+  .cf-note{
+    margin-top:10px; font-size:11px; color:var(--muted);
+    border-top:1px dashed var(--line-2); padding-top:8px;
+  }
+</style>
+</head>
+<body data-page-node-id="GO5b4ECwdgsfJki98Q86dc">
+
+<div data-page-node-id="Ex0z7hQUHQ7Q4w7nAklkmc" class="bar-top" id="barTop" style="width:0"></div>
+
+<header data-page-node-id="vUkp17BaWYkZQL6RrkDjaE">
+  <div data-page-node-id="vCawi5ztNYFNW1EwDZdhFu" class="hd">
+    <div data-page-node-id="9eBGThBhIHW9MnwbCUEaL4" class="logo">
+      <div data-page-node-id="NczEBXOCpoClUeqXaDWAAk" class="mark">
+        <svg data-page-node-id="cwz4CT4ndyHyIkUx062PAH" fill="none" height="15" stroke="#fff" stroke-linecap="round" stroke-width="2" viewBox="0 0 24 24" width="15">
+          <circle data-page-node-id="CQjBXHTQQ9bW0ZYWAHiMEw" cx="12" cy="12" r="9"></circle><path data-page-node-id="aJon3TBasWDBEDx5TamdsF" d="M3 12h18M12 3c2.5 2.6 2.5 15.4 0 18M12 3c-2.5 2.6-2.5 15.4 0 18"></path>
+        </svg>
+      </div>
+      <h1 data-page-node-id="8cD18BkIkPpwIYX26U6BzK"><!--pnid:KEDUBHCOxUbgRfFeZ4ySUP-->多元信息台</h1>
+      <span data-page-node-id="1XmSplRYjXAoGpYjLC8S5c" class="tag"><!--pnid:m8moYunpm3KuCEeQp9GCJe-->28 源 · 不闭环</span>
+    </div>
+    <div data-page-node-id="3Bel4UqkAAoAlDNfvOfiev" class="spacer"></div>
+    <div data-page-node-id="eXfrqHeKEfXzKpLZQ7IFdN" class="search">
+      <svg data-page-node-id="cHOzRTcMKyia6kQ5GsFyFA" fill="none" height="14" stroke="currentColor" stroke-linecap="round" stroke-width="2" viewBox="0 0 24 24" width="14">
+        <circle data-page-node-id="JFF3rOELAXzoJasTMoW5H9" cx="11" cy="11" r="7"></circle><path data-page-node-id="K8BS9LaVOeDWJSj6jqCyOp" d="M20 20l-3.5-3.5"></path>
+      </svg>
+      <input data-page-node-id="NaWEpDeF7IIifVkhINKcSz" id="q" placeholder="跨源搜索关键词…" type="search">
+    </div>
+    <button data-page-node-id="lDaEwYcecyjdyH9kMCZLV4" class="btn" id="btnExplore">
+      <svg data-page-node-id="eTIoIBUcKXpYNtjW2P9Y0G" fill="none" height="14" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewBox="0 0 24 24" width="14">
+        <path data-page-node-id="SuOfQENSvfB5UzP5z9oy6J" d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"></path>
+      </svg><!--pnid:k7ebreLWxMyZjOzdEsc8Rn-->
+      随机探索
+    </button>
+    <button data-page-node-id="eC0fRPQj3QBctFlBzHtHV3" <span class="live" id="liveWrap" title="实时推送状态">
+      <span class="live-dot" id="liveDot"></span><span class="live-txt" id="liveTxt">连接中</span>
+    </span>
+    <span class="live-tip" id="liveTip"></span>
+    <button class="btn" id="btnRefresh">
+      <svg data-page-node-id="Wqek10NCQVJ8CzLYrivhoR" fill="none" height="14" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="14">
+        <path data-page-node-id="yoC9hho40b15DPi2h5qhDh" d="M3 12a9 9 0 1 0 3-6.7"></path><path data-page-node-id="XnljAqDB7VljntBTRN6Vpc" d="M3 4v5h5"></path>
+      </svg>
+      <span data-page-node-id="bzmjImkHhJIZ1xWrMawNd1" id="refreshTxt"><!--pnid:dU7H4HnPX8i6CckCRm1wtL-->刷新</span>
+    </button>
+  </div>
+</header>
+
+<div data-page-node-id="B5oRpELa1DoT9A8fqdArmP" class="wrap">
+  <!--pnid:uhcGAR87M41fxqmquAIMHh--><!-- ============ 侧栏 ============ -->
+  <aside data-page-node-id="cMvMKRd7mGazXcZ6XQlOxA">
+    <section data-page-node-id="6AzdiEVScvezQ8ON4UFyzZ" class="card">
+      <h2 data-page-node-id="nERkgyDcHIZvyNIVDuYeTH"><!--pnid:qGW5cwoLWLLGNsPEiVTKJ6-->信息体检 <span data-page-node-id="vflEcvmozNftxWFeH9NwmG" class="hint" id="healthScope"><!--pnid:3lS1Zq2BrPeomYZAyWcBFp-->当前视图</span></h2>
+      <div data-page-node-id="30ksvXxZWqlMUwTRdgxBUi" class="bd">
+        <div data-page-node-id="W7RhaYJmXAXx30NAeHF83W" class="health">
+          <div data-page-node-id="TtVGjzuAn4NlpN4LJFquWB" class="gauge">
+            <svg data-page-node-id="JeLUnu3lJNd0t4in82eqMU" viewBox="0 0 82 82">
+              <circle data-page-node-id="7UATRWz5ts0QyAu0CPiAT4" class="bg" cx="41" cy="41" r="34"></circle>
+              <circle data-page-node-id="ER64UZZKN6PuQqmN61iHQt" class="fg" cx="41" cy="41" id="gaugeFg" r="34" stroke="#2b5d8c" stroke-dasharray="213.6" stroke-dashoffset="213.6"></circle>
+            </svg>
+            <div data-page-node-id="SFnLMWtdAgZvAEbsQTCoLu" class="val"><b data-page-node-id="EnDizDya21AwJu8Lk2C20N" class="num" id="gaugeVal"><!--pnid:AgNfbs1fQu1IzbCFMI7D4p-->—</b><small data-page-node-id="MgiZ3RBwRPGbJ64Sjp2f4E"><!--pnid:k5qpJsJbMvI8iNP7v8gHIm-->多元度</small></div>
+          </div>
+          <div data-page-node-id="yJ55AclQWX2zKUkzFhFw4T" class="txt">
+            <div data-page-node-id="EgTTcbugEAykiOVuVbMRgj" class="verdict" id="verdict"><!--pnid:FfcRM1jOqq04ZanGOdrvb3-->正在计算…</div>
+            <div data-page-node-id="w8Id542qi4VPu2Mnxr467K" class="note" id="verdictNote"></div>
+            <div class="echo" id="echoBox">
+              <div class="echo-title">茧房预警</div>
+              <div class="echo-text" id="echoText"></div>
+            </div>
+          </div>
+        </div>
+
+        <div data-page-node-id="CWMdAgHoJnjwCWnjnaQY9O" class="sub-block">
+          <div data-page-node-id="6t6e3ILfO6oVRv6FzUKTIO" class="sub-title"><!--pnid:Wnsf4KrKvhfKvnUJij4Umg-->视角分布</div>
+          <div data-page-node-id="1wNiyFUoc1nBW8g3wewLd3" class="lean-bar" id="leanBar"></div>
+          <div data-page-node-id="8aA2kwC8MT3XrsLScGB6DB" class="lean-legend" id="leanLegend"></div>
+        </div>
+
+        <div data-page-node-id="XHMFrejUzmTrP7HWEjvFRE" class="sub-block">
+          <div data-page-node-id="AaCnHmDT0otz4wClCBr37r" class="sub-title"><!--pnid:htaYruXknoi3zRn755c9Zj-->来源集中度</div>
+          <div data-page-node-id="gDWBPawvPFyKF7wQfGe71L" class="meter">
+            <div data-page-node-id="5RGsiUoeX468qE7nzcTEL0" class="meter-row"><span data-page-node-id="GH0yjBnPrv6dE5qH5KSbGE"><!--pnid:cvGkXF9qfzVIRhsqmUDMPY-->最大单一来源</span><b data-page-node-id="3OpoIVWILTGcQEgUbkd3VH" class="num" id="top1"><!--pnid:Zcr92BOa9LOpXrCJ80Yd6X-->—</b></div>
+            <div data-page-node-id="iz4jGIIDvGXAR7SgbhmTeC" class="meter-track"><div data-page-node-id="Xe0ekvkSYQ4EnYwr6CwcNB" class="meter-fill" id="top1Bar" style="background:#d24b3f; width:0"></div></div>
+          </div>
+          <div data-page-node-id="OOYfkjAZk0eRBn7aL9ody4" class="meter" style="margin-top:10px">
+            <div data-page-node-id="Vng0bnKfkZXjtU92B5Wiq1" class="meter-row"><span data-page-node-id="MdorgilbBAvb4HrhvWOxvF"><!--pnid:KtHDJ4JOY6wPyBKV6o1KRC-->前三来源合计</span><b data-page-node-id="zj2nUg7THFskXrINiygNmM" class="num" id="top3"><!--pnid:EnwTRN1HmjMUE8W7TEssLb-->—</b></div>
+            <div data-page-node-id="GZQ2URC3c4AtC8NLLfMMOB" class="meter-track"><div data-page-node-id="0ycrEZ4EkbgIBQFQrDunNr" class="meter-fill" id="top3Bar" style="background:#e0a944; width:0"></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section data-page-node-id="FENPzQWLsWT53v44NIQv1T" class="card">
+      <h2 data-page-node-id="BZw7E3nr8dEihbentENzZx"><!--pnid:M8xXmcBb9iN3G0Mj7pTPQQ-->频道</h2>
+      <div data-page-node-id="ElhPeJHmjzTBuUEUAXRUZ4" class="bd"><div data-page-node-id="TzrY8vR36L7kH5fKLVwq5l" class="chips" id="chips"></div></div>
+    </section>
+
+    <section data-page-node-id="xQrq7d6OV5YrkCwliqxUqe" class="card">
+      <h2 data-page-node-id="bXJA7tFRJJ3OWrqDvumDvl"><!--pnid:XcMSiYaYRGXVfFgxZIX425-->来源 <span data-page-node-id="I4AwFJN1JEXhNq0YO3w93j" class="hint" id="srcHint"></span></h2>
+      <div data-page-node-id="Ji6jqR8YgHhHO7ppzPcTfd" class="bd">
+        <div data-page-node-id="b0WF2552bZCc7lhBofAHax" class="src-list" id="srcList"></div>
+        <div data-page-node-id="BmEdfHxCCw6KEzi7jPB9pt" class="src-actions">
+          <button data-page-node-id="xbFmILX6SCEWVuHTEWHm1c" id="allOn"><!--pnid:muvFdnBeKiufWXCA7uwLCn-->全选</button>
+          <button data-page-node-id="BG7cfzGB1GOK9JpuNnCNZW" id="allOff"><!--pnid:oyEgpUAoAqDFc5y49n4BUB-->全不选</button>
+          <button data-page-node-id="m2oHFsRYmHYa5YOCEDJqx4" id="onlyDiverse"><!--pnid:ExZOIZixKXRXs32whAC6ef-->只看跨立场</button>
+        </div>
+      </div>
+    </section>
+  </aside>
+
+  <!--pnid:uxFG5rvIfj3zZxe7WniWnZ--><!-- ============ 主区 ============ -->
+  <main data-page-node-id="7JpBBWezcIhE4RwFq80hWJ">
+    <div data-page-node-id="cdy8ItFhybKB6chs9dvEHN" class="toolbar">
+      <div data-page-node-id="Fdnf7QNiPSVoEUwx6ACas4" class="tabs" id="tabs">
+        <button data-page-node-id="l45K4InkXzpeB69bL0qh5G" class="on" data-v="topic"><!--pnid:hvL9yGwpGCBrHfLMxuncrK-->多视角话题</button>
+        <button data-page-node-id="cfBtn1" data-v="contrast">议题对照</button>
+        <button data-page-node-id="hjOaDAE84HA8xborSckhpV" data-v="time"><!--pnid:d054Fzcw5PbBlOUj7P8oz1-->时间线</button>
+      </div>
+      <span data-page-node-id="wrzmmKB4DWGJLQvRysiwB5" class="count" id="countTxt"></span>
+    </div>
+    <div data-page-node-id="MXBuiIVP2rHpIyOts55roG" id="exploreSlot"></div>
+    <div data-page-node-id="drn66Rtunhi3C1NlIrwZDa" id="content"></div>
+  </main>
+</div>
+
+<footer data-page-node-id="PycdN24YuYkCIuuyzeHjIo"><!--pnid:C0eGqdZhUczvyxkwTvLoGJ-->
+  内容版权归各原始媒体所有，本站只做聚合与视角呈现，点击标题跳转原文。<br data-page-node-id="iBqtEKwRyukE1LJuIMBQdw"><!--pnid:RHKW7SrlvLONQDX1ZEHe9V-->
+  数据每 15 分钟自动刷新一次，所有筛选与已读状态仅保存在本机浏览器。
+</footer>
+
+<script data-page-node-id="QUFwng0FyrUZN8rmRZHivV" data-pnid-children="fBBQ74dPZcVplfAiwiXrCM">
+(function(){
+  'use strict';
+
+  var READ_KEY = 'infohub.read.v1';
+  var API = '/api/feed';
+
+  var DATA = null;
+  var LEANS = {};
+  var filter = { channels: [], sources: null, q: '', view: 'topic' };
+  var read = {};
+  try { read = JSON.parse(localStorage.getItem(READ_KEY) || '{}') || {}; } catch(e){ read = {}; }
+  var explorePick = null;
+  var pollTimer = null;
+  var stream = null;            // SSE 连接
+  var lastGeneration = -1;      // 服务端内容版本号，变了才重渲染
+
+  var $ = function(id){ return document.getElementById(id); };
+  function esc(s){
+    return String(s == null ? '' : s)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  }
+  function pad(n){ return (n<10?'0':'')+n; }
+  function rel(t){
+    var d = Date.now() - t;
+    if (d < 60000) return '刚刚';
+    if (d < 3600000) return Math.floor(d/60000) + ' 分钟前';
+    if (d < 86400000) return Math.floor(d/3600000) + ' 小时前';
+    var x = new Date(t), now = new Date();
+    var today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+    if (t >= today - 86400000) return '昨天 ' + pad(x.getHours()) + ':' + pad(x.getMinutes());
+    if (x.getFullYear() === now.getFullYear()) return (x.getMonth()+1) + '月' + x.getDate() + '日';
+    return x.getFullYear() + '年' + (x.getMonth()+1) + '月' + x.getDate() + '日';
+  }
+  function dayLabel(t){
+    var x = new Date(t), now = new Date();
+    var d0 = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+    if (t >= d0) return '今天';
+    if (t >= d0 - 86400000) return '昨天';
+    return (x.getMonth()+1) + ' 月 ' + x.getDate() + ' 日';
+  }
+
+  /* ---------------- 筛选 ---------------- */
+  function sourceSet(){
+    if (!filter.sources) return null;
+    return filter.sources;
+  }
+  function visibleItems(){
+    if (!DATA) return [];
+    var ss = sourceSet();
+    var q = filter.q.trim().toLowerCase();
+    return DATA.items.filter(function(it){
+      if (ss && !ss.has(it.source)) return false;
+      if (filter.channels.length && !filter.channels.some(function(c){ return it.channels.indexOf(c) >= 0; })) return false;
+      if (q){
+        var hay = (it.title + ' ' + (it.summary||'') + ' ' + it.sourceName).toLowerCase();
+        if (hay.indexOf(q) < 0) return false;
+      }
+      return true;
+    });
+  }
+
+  /* ---------------- 信息体检 ---------------- */
+  function computeHealth(items){
+    var n = items.length;
+    if (!n) return null;
+
+    var bySource = {}, byLean = {};
+    items.forEach(function(it){
+      bySource[it.source] = (bySource[it.source] || 0) + 1;
+      byLean[it.lean] = (byLean[it.lean] || 0) + 1;
+    });
+
+    /* 多元度：测「立场分布」的均衡度，而不是「来源数」的均衡度。
+       原因：信息茧房的本质是立场单一，而不是来源单一。
+       原实现用 bySource 算熵 —— 27 个源里 13 个都是科技商业类，
+       源数很多但立场高度同质，多元度照样虚高，指标测错了对象。 */
+    var leanKeys = Object.keys(byLean);
+
+    // 立场分布的归一化香农熵：分布越均匀，值越接近 100
+    var ps = leanKeys.map(function(k){ return byLean[k] / n; });
+    var H = -ps.reduce(function(a,p){ return a + (p > 0 ? p * Math.log(p) : 0); }, 0);
+    var N = leanKeys.length;
+    var score = N > 1 ? Math.round(H / Math.log(N) * 100) : (N === 1 ? 0 : 0);
+
+    // 同时保留来源维度的熵，作为辅助参考（不参与主分数）
+    var sKeys = Object.keys(bySource);
+    var sps = sKeys.map(function(k){ return bySource[k] / n; });
+    var sH = -sps.reduce(function(a,p){ return a + (p > 0 ? p * Math.log(p) : 0); }, 0);
+    var sourceScore = sKeys.length > 1 ? Math.round(sH / Math.log(sKeys.length) * 100) : 0;
+
+    var sorted = sKeys.sort(function(a,b){ return bySource[b] - bySource[a]; });
+    var top1 = sorted.length ? bySource[sorted[0]] / n : 0;
+    var top3 = sorted.slice(0,3).reduce(function(a,k){ return a + bySource[k]; }, 0) / n;
+    var leanCount = leanKeys.length;
+
+    // 立场维度的主导占比 —— 茧房预警的判断依据
+    var leanSorted = leanKeys.sort(function(a,b){ return byLean[b] - byLean[a]; });
+    var leanTop = leanSorted.length ? byLean[leanSorted[0]] / n : 0;
+    var leanTopName = leanSorted.length ? (LEANS[leanSorted[0]] && LEANS[leanSorted[0]].label) || leanSorted[0] : '';
+
+    // 茧房预警：样本足够且某类立场占比过半 → 视野正在收敛
+    var echo = null;
+    if (n >= 10 && leanTop > 0.55 && leanCount >= 2){
+      echo = {
+        lean: leanSorted[0],
+        label: leanTopName,
+        ratio: leanTop,
+        // 给出的「对立面」建议：与主导立场倾向相反的标签
+        counter: counterLeans(leanSorted[0]),
+      };
+    }
+
+    return {
+      n: n, score: score, sourceScore: sourceScore,
+      sources: sKeys.length, leans: byLean, leanCount: leanCount,
+      top1: top1, top1Name: sorted.length ? (DATA.sourceName[sorted[0]] || sorted[0]) : '',
+      top3: top3, bySource: bySource,
+      leanTop: leanTop, leanTopName: leanTopName, echo: echo,
+    };
+  }
+
+  /* 给出与主导立场倾向相反的标签，作为「去看另一面」的入口 */
+  var COUNTER = {
+    progressive: ['conservative', 'center', 'regional'],
+    conservative: ['progressive', 'center', 'regional'],
+    center: ['progressive', 'conservative', 'regional'],
+    state: ['progressive', 'center', 'regional'],
+    regional: ['center', 'progressive', 'community'],
+    industry: ['science', 'community', 'center'],
+    science: ['industry', 'community', 'center'],
+    community: ['industry', 'science', 'center'],
+  };
+  function counterLeans(lean){
+    return (COUNTER[lean] || ['center']).map(function(k){
+      return { key: k, label: (LEANS[k] && LEANS[k].label) || k, color: (LEANS[k] && LEANS[k].color) || '#999' };
+    });
+  }
+
+  function renderHealth(h){
+    var box = $('healthScope');
+    if (!h){
+      $('gaugeVal').textContent = '—';
+      $('gaugeFg').setAttribute('stroke-dashoffset', '213.6');
+      $('verdict').textContent = '没有可分析的内容';
+      $('verdictNote').textContent = '调整筛选条件试试';
+      $('leanBar').innerHTML = '';
+      $('leanLegend').innerHTML = '';
+      $('top1').textContent = '—'; $('top3').textContent = '—';
+      $('top1Bar').style.width = '0'; $('top3Bar').style.width = '0';
+      return;
+    }
+    box.textContent = h.n + ' 条内容';
+
+    var C = 213.6;
+    $('gaugeFg').setAttribute('stroke-dashoffset', String(C * (1 - h.score/100)));
+    var color = h.score >= 85 ? '#1a7f5a' : h.score >= 70 ? '#3f7a52' : h.score >= 50 ? '#e0a944' : '#d24b3f';
+    $('gaugeFg').setAttribute('stroke', color);
+    $('gaugeVal').textContent = h.score;
+
+    var v = '', note = '';
+    if (h.n < 10){
+      v = '样本不足'; note = '当前仅 ' + h.n + ' 条内容，分布指标尚不成立。';
+    } else if (h.leanCount < 2){
+      v = '单一视角'; note = '当前内容全部来自同一类立场视角，几乎等于只听一种声音。';
+    } else if (h.score >= 85){
+      v = '视角很均衡'; note = h.leanCount + ' 类立场视角分布均匀（来源 ' + h.sources + ' 个），暂无明显偏食。';
+    } else if (h.score >= 70){
+      v = '比较多元'; note = h.leanCount + ' 类视角参与，「' + h.leanTopName + '」占 ' + Math.round(h.leanTop*100) + '%，略有侧重。';
+    } else if (h.score >= 50){
+      v = '有所集中'; note = '「' + h.leanTopName + '」占到了 ' + Math.round(h.leanTop*100) + '%，建议看看其他视角的报道。';
+    } else {
+      v = '视野偏窄'; note = '内容高度集中在「' + h.leanTopName + '」，容易形成回声室。';
+    }
+    $('verdict').textContent = v;
+    $('verdictNote').textContent = note;
+
+    // 视角分布
+    var order = Object.keys(h.leans).sort(function(a,b){ return h.leans[b] - h.leans[a]; });
+    $('leanBar').innerHTML = order.map(function(k){
+      var c = (LEANS[k] && LEANS[k].color) || '#999';
+      return '<i style="width:' + (h.leans[k]/h.n*100) + '%;background:' + c + '" title="' +
+             esc((LEANS[k]&&LEANS[k].label)||k) + ' ' + h.leans[k] + ' 条"></i>';
+    }).join('');
+    $('leanLegend').innerHTML = order.map(function(k){
+      var L = LEANS[k] || { label:k, color:'#999' };
+      return '<div class="lean-row"><i class="dot" style="background:' + L.color + '"></i>' +
+             '<span class="nm">' + esc(L.label) + '</span>' +
+             '<span class="ct">' + h.leans[k] + ' 条 · ' + Math.round(h.leans[k]/h.n*100) + '%</span></div>';
+    }).join('');
+
+    $('top1').textContent = Math.round(h.top1*100) + '%';
+    $('top3').textContent = Math.round(h.top3*100) + '%';
+    $('top1Bar').style.width = (h.top1*100) + '%';
+    $('top3Bar').style.width = (h.top3*100) + '%';
+  }
+
+  /* ---------------- 渲染：频道 / 来源 ---------------- */
+  function renderChips(){
+    $('chips').innerHTML = DATA.channels.map(function(c){
+      var on = c.id === 'all'
+        ? filter.channels.length === 0
+        : filter.channels.indexOf(c.id) >= 0;
+      return '<button class="chip' + (on ? ' on' : '') + '" data-c="' + c.id + '">' + esc(c.name) + '</button>';
+    }).join('');
+  }
+
+  function renderSources(){
+    var ss = sourceSet();
+    var okN = DATA.sources.filter(function(s){ return s.status === 'ok'; }).length;
+    $('srcHint').textContent = okN + '/' + DATA.sources.length + ' 在线';
+    $('srcList').innerHTML = DATA.sources.map(function(s){
+      var on = !ss || ss.has(s.id);
+      var L = LEANS[s.lean] || { label:s.lean, color:'#999' };
+      return '<label class="src' + (on ? '' : ' off') + '">' +
+        '<input type="checkbox" data-s="' + s.id + '"' + (on ? ' checked' : '') + '>' +
+        '<i class="dot" style="background:' + L.color + '"></i>' +
+        '<span class="nm" title="' + esc(s.name + ' · ' + s.region + ' · ' + L.label + (s.error ? ' · ' + s.error : '')) + '">' + esc(s.name) + '</span>' +
+        '<span class="ct">' + s.count + '</span>' +
+        '<i class="st ' + s.status + '"></i>' +
+      '</label>';
+    }).join('');
+  }
+
+  /* ---------------- 渲染：话题视图 ---------------- */
+  function renderTopics(items){
+    var idset = {};
+    items.forEach(function(it){ idset[it.id] = 1; });
+
+    var cls = (DATA.clusters || []).map(function(c){
+      var vis = (c.itemIds || []).map(function(id){ return DATA.byId[id]; })
+        .filter(function(it){ return it && idset[it.id]; });
+      var srcs = {};
+      vis.forEach(function(it){ srcs[it.source] = 1; });
+      return { c: c, items: vis, nSrc: Object.keys(srcs).length };
+    }).filter(function(x){ return x.items.length >= 2 && x.nSrc >= 2; });
+
+    if (!cls.length) return '';
+
+    return cls.map(function(x){
+      var c = x.c;
+      var leanSet = {};
+      x.items.forEach(function(it){ leanSet[it.lean] = 1; });
+      var leans = Object.keys(leanSet);
+      var hasOpposite = leans.indexOf('progressive') >= 0 && leans.indexOf('conservative') >= 0;
+      var badge = hasOpposite
+        ? '<span class="badge multi">立场对读</span>'
+        : (leans.length >= 2 ? '<span class="badge multi">' + leans.length + ' 种视角</span>'
+                             : '<span class="badge single">单一视角</span>');
+
+      var kw = (c.topic || []).slice(0, 5).map(function(w){ return '<span>' + esc(w) + '</span>'; }).join('');
+
+      return '<section class="topic">' +
+        '<div class="topic-hd">' +
+          badge +
+          '<span class="badge src">' + x.items.length + ' 条 · ' + x.nSrc + ' 源</span>' +
+          '<div class="kw">' + kw + '</div>' +
+          '<span class="spacer"></span>' +
+          '<span style="font-size:11px;color:var(--soft)">' + rel(c.time) + '</span>' +
+        '</div>' +
+        x.items.map(entryHtml).join('') +
+      '</section>';
+    }).join('');
+  }
+
+  /* ---------------- 议题对照视图 ----------------
+     把同一话题簇里的条目按立场分组，并排呈现。
+     解决「只有聚合没有对比」的问题：用户不��自己从一堆条目里
+     找出谁和谁在讲同一件事、说法有何不同。
+     同时用「叙述特征」判断两条报道的差异类型：
+       · 事实分歧 —— 双方都给出了可核对的数字/断言，但方向相反
+       · 视角差异 —— 关注点不同，事实部分不冲突
+  */
+  function renderContrast(items){
+    var idset = {};
+    items.forEach(function(it){ idset[it.id] = 1; });
+
+    var cls = (DATA.clusters || []).map(function(c){
+      var vis = (c.itemIds || []).map(function(id){ return DATA.byId[id]; })
+        .filter(function(it){ return it && idset[it.id]; });
+      var srcs = {};
+      vis.forEach(function(it){ srcs[it.source] = 1; });
+      return { c: c, items: vis, nSrc: Object.keys(srcs).length };
+    }).filter(function(x){ return x.items.length >= 2 && x.nSrc >= 2; });
+
+    // 只有包含 2 类以上立场、且每类都有条目的簇才值得对照
+    var worth = cls.map(function(x){
+      var by = {};
+      x.items.forEach(function(it){ (by[it.lean] = by[it.lean] || []).push(it); });
+      var ks = Object.keys(by);
+      return { x: x, by: by, ks: ks };
+    }).filter(function(g){ return g.ks.length >= 2; });
+
+    if (!worth.length) return '';
+
+    return worth.map(function(g){
+      var c = g.x.c;
+      var kw = (c.topic || []).slice(0, 5).map(function(w){ return '<span>' + esc(w) + '</span>'; }).join('');
+
+      // 按立场分组，每组取最新的一条作为代表
+      var cols = g.ks.map(function(k){
+        var arr = g.by[k].slice().sort(function(a,b){ return b.time - a.time; });
+        var rep = arr[0];
+        var L = LEANS[k] || { label: k, color: '#999' };
+        return { lean: k, label: L.label, color: L.color, rep: rep, more: arr.length - 1 };
+      });
+
+      // 判定差异类型：比较各代表的数字型断言
+      var nums = cols.map(function(c){
+        var m = String(c.rep.title + ' ' + (c.rep.summary || '')).match(/\d+(?:\.\d+)?\s*(?:%|percent|亿|万|亿|美元|元|倍|人)/gi);
+        return { col: c, facts: m ? m.slice(0, 3) : [] };
+      });
+      var withFacts = nums.filter(function(x){ return x.facts.length; });
+      var kind = (withFacts.length >= 2) ? 'fact' : 'view';
+
+      var head = kind === 'fact'
+        ? '<span class="badge multi">存在事实分歧</span>'
+        : '<span class="badge multi">视角差异</span>';
+
+      return '<section class="contrast">' +
+        '<div class="topic-hd">' +
+          head +
+          '<span class="badge src">' + g.x.items.length + ' 条 · ' + g.x.nSrc + ' 源 · ' + g.ks.length + ' 种视角</span>' +
+          '<div class="kw">' + kw + '</div>' +
+          '<span class="spacer"></span>' +
+          '<span style="font-size:11px;color:var(--soft)">' + rel(c.time) + '</span>' +
+        '</div>' +
+        '<div class="cf-row">' +
+          cols.map(function(c){
+            return '<div class="cf-col" style="--c:' + c.color + '">' +
+              '<div class="cf-lean">' + esc(c.label) + (c.more > 0 ? ' <span class="cf-more">+' + c.more + '</span>' : '') + '</div>' +
+              '<a class="cf-title" href="' + esc(c.rep.url) + '" target="_blank" rel="noopener noreferrer" data-id="' + c.rep.id + '">' +
+                esc(c.rep.title) +
+              '</a>' +
+              '<div class="cf-meta">' + esc(c.rep.sourceName) + ' · ' + rel(c.rep.time) + '</div>' +
+              (c.rep.summary ? '<div class="cf-sum">' + esc(c.rep.summary) + '</div>' : '') +
+            '</div>';
+          }).join('') +
+        '</div>' +
+        (kind === 'fact'
+          ? '<div class="cf-note">以上视角给出了不同的数字或断言，建议核对原始出处。</div>'
+          : '<div class="cf-note">各视角关注点不同，事实部分并不冲突 —— 差异来自报道角度而非结论对立。</div>') +
+      '</section>';
+    }).join('');
+  }
+
+  function entryHtml(it){
+    var L = LEANS[it.lean] || { label:it.lean, color:'#999' };
+    var isRead = !!read[it.id];
+    return '<a class="entry' + (isRead ? ' read' : '') + '" href="' + esc(it.url) + '" target="_blank" rel="noopener noreferrer" data-id="' + it.id + '">' +
+      '<i class="bar" style="background:' + L.color + '"></i>' +
+      '<div class="main">' +
+        '<div class="t">' + esc(it.title) + '</div>' +
+        '<div class="meta">' +
+          '<span class="sname">' + esc(it.sourceName) + '</span>' +
+          '<span class="lean-tag" style="background:' + L.color + '18;color:' + L.color + '">' + esc(L.label) + '</span>' +
+          '<span>' + esc(it.region) + '</span>' +
+          '<span>' + rel(it.time) + '</span>' +
+        '</div>' +
+        (it.summary ? '<div class="sm">' + esc(it.summary) + '</div>' : '') +
+      '</div>' +
+    '</a>';
+  }
+
+  /* ---------------- 渲染：时间线 ---------------- */
+  function renderTimeline(items){
+    if (!items.length) return '';
+    var sorted = items.slice().sort(function(a,b){ return b.time - a.time; });
+    var out = [], lastDay = '';
+    sorted.slice(0, 300).forEach(function(it){
+      var d = dayLabel(it.time);
+      if (d !== lastDay){
+        out.push('<div class="tl-day">' + esc(d) + '</div>');
+        lastDay = d;
+      }
+      out.push('<section class="topic" style="margin-bottom:8px">' + entryHtml(it) + '</section>');
+    });
+    return out.join('');
+  }
+
+  /* ---------------- 渲染：主区 ---------------- */
+  function render(){
+    if (!DATA) return;
+    var items = visibleItems();
+    var h = computeHealth(items);
+    renderHealth(h);
+    renderSources();
+
+    $('countTxt').textContent = items.length + ' 条 · ' +
+      (h ? h.sources + ' 个来源 · ' + h.leanCount + ' 类视角' : '无来源');
+
+    var html = '';
+    if (filter.view === 'topic') html = renderTopics(items);
+    else if (filter.view === 'contrast') html = renderContrast(items);
+    else html = renderTimeline(items);
+
+    if (!html){
+      html = '<div class="empty"><b>' +
+        (items.length
+          ? (filter.view === 'contrast'
+              ? '当前筛选下没有同时包含 2 类以上视角的跨来源话题 —— 试试放宽来源筛选，或切到「多视角话题」看聚类结果'
+              : '这一批内容暂时没有跨来源的共同话题')
+          : '没有符合条件的内容') +
+        '</b>' +
+        (items.length ? '把「多视角话题」换成「时间线」可以按时间浏览全部条目。'
+                      : '试试放宽频道、来源或清空搜索词。') +
+        '</div>';
+    }
+    $('content').innerHTML = html;
+  }
+
+  /* ---------------- 探索 ---------------- */
+  function pickExplore(){
+    if (!DATA) return;
+    var items = visibleItems().filter(function(it){ return !read[it.id]; });
+    if (!items.length) items = visibleItems();
+    if (!items.length) return;
+
+    // 优先挑「读得最少的来源」，制造跳出茧房的效果
+    var cnt = {};
+    DATA.items.forEach(function(it){ if (read[it.id]) cnt[it.source] = (cnt[it.source]||0)+1; });
+    items.sort(function(a,b){ return (cnt[a.source]||0) - (cnt[b.source]||0); });
+    var pool = items.slice(0, Math.max(6, Math.ceil(items.length * 0.3)));
+    explorePick = pool[Math.floor(Math.random() * pool.length)];
+    renderExplore();
+  }
+
+  function renderExplore(){
+    if (!explorePick){ $('exploreSlot').innerHTML = ''; return; }
+    var it = explorePick;
+    var L = LEANS[it.lean] || { label:it.lean, color:'#999' };
+    $('exploreSlot').innerHTML =
+      '<div class="explore">' +
+        '<div class="lbl">随机探索' +
+          '<button id="btnExploreAgain">换一条</button>' +
+        '</div>' +
+        '<a class="ttl" href="' + esc(it.url) + '" target="_blank" rel="noopener noreferrer" data-id="' + it.id + '">' + esc(it.title) + '</a>' +
+        '<div class="why">来自 <b>' + esc(it.sourceName) + '</b>（' + esc(L.label) + ' · ' + esc(it.region) + '）—— 这是你读得较少的来源，' + rel(it.time) + '。</div>' +
+      '</div>';
+  }
+
+  /* ---------------- 数据加载 ---------------- */
+  function setProgress(p, txt){
+    $('barTop').style.width = p + '%';
+    if (txt) $('refreshTxt').textContent = txt;
+  }
+
+  function fetchFeed(fresh){
+    var url = API + (fresh ? '?fresh=1' : '');
+    return fetch(url).then(function(r){
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    }).then(function(d){
+      DATA = d;
+      LEANS = d.leans || {};
+      DATA.sourceName = {};
+      d.sources.forEach(function(s){ DATA.sourceName[s.id] = s.name; });
+      DATA.byId = {};
+      d.items.forEach(function(it){ DATA.byId[it.id] = it; });
+      if (!filter.sources){
+        filter.sources = new Set(d.sources.map(function(s){ return s.id; }));
+      } else {
+        d.sources.forEach(function(s){ filter.sources.add(s.id); });
+      }
+      return d;
+    });
+  }
+
+  function poll(){
+    if (pollTimer) clearTimeout(pollTimer);
+    pollTimer = setTimeout(function(){
+      // 轮询走轻量接口：只问「抓完了没有」，避免每 2 秒重传几百 KB
+      fetch(API + '?light=1').then(function(r){ return r.json(); }).then(function(d){
+        var done = d.sources.filter(function(s){ return s.status === 'ok' || s.status === 'fail'; }).length;
+        var total = d.sources.length;
+        setProgress(Math.round(done/total*100), d.pending && d.pending.length ? '抓取中 ' + done + '/' + total : '刷新');
+        if (d.pending && d.pending.length){
+          poll();
+        } else {
+          return fetchFeed(false).then(function(){
+            renderChips(); render(); setProgress(0, '刷新');
+          });
+        }
+      }).catch(function(){ setProgress(0, '刷新'); });
+    }, 1800);
+  }
+
+  /* ---------------- 实时推送（SSE） ----------------
+     服务端在有新条目落地时推 update 事件，前端据此拉最新的回来重渲染，
+     不再全量轮询几百 KB。 */
+  function connectStream(){
+    if (stream) { try { stream.close(); } catch(e){} }
+    if (typeof EventSource === 'undefined'){
+      console.warn('[sse] 浏览器不支持，退回轮询');
+      return;
+    }
+    try {
+      stream = new EventSource('/api/stream');
+    } catch(e){
+      console.warn('[sse] 建立连接失败，退回轮询', e);
+      return;
+    }
+
+    stream.addEventListener('hello', function(e){
+      try { lastGeneration = JSON.parse(e.data).generation; } catch(err){}
+      setLiveState(true);
+    });
+
+    stream.addEventListener('update', function(e){
+      var d;
+      try { d = JSON.parse(e.data); } catch(err){ return; }
+      if (d.generation === lastGeneration) return;   // 内容没变就不重渲染
+      fetchFeed(false).then(function(){
+        lastGeneration = d.generation;
+        renderChips(); render();
+        flashLive(d.added);
+      }).catch(function(){});
+    });
+
+    stream.onopen = function(){ setLiveState(true); };
+    stream.onerror = function(){ setLiveState(false); };  // EventSource 自带重连
+  }
+
+  /* 顶栏实时状态指示 */
+  function setLiveState(on){
+    var el = $('liveDot');
+    if (!el) return;
+    el.classList.toggle('on', !!on);
+    el.setAttribute('title', on ? '实时推送已连接' : '实时推送断开，正在重连');
+    var txt = $('liveTxt');
+    if (txt) txt.textContent = on ? '实时' : '重连中';
+  }
+
+  /* 新条目到达时的轻提示 */
+  function flashLive(added){
+    var el = $('liveTip');
+    if (!el) return;
+    el.textContent = '+' + added + ' 条新内容';
+    el.classList.add('show');
+    clearTimeout(el._t);
+    el._t = setTimeout(function(){ el.classList.remove('show'); }, 2600);
+  }
+
+  function boot(){
+    $('content').innerHTML = '<div class="skeleton">' +
+      '<div class="sk-line" style="width:38%"></div><div class="sk-line" style="width:88%"></div>' +
+      '<div class="sk-line" style="width:64%"></div></div>'.repeat(3);
+
+    fetchFeed(false).then(function(d){
+      try {
+        renderChips();
+        render();
+      } catch(err){
+        // 渲染层出错要和网络层问题区分开，不要笼统地说「连不上服务」
+        console.error('[render]', err);
+        $('content').innerHTML = '<div class="notice"><b>页面渲染出错。</b><br><br>' +
+          esc(err && err.message || String(err)) + '</div>';
+        return;
+      }
+      setProgress(Math.round(d.sources.filter(function(s){return s.status!=='wait'&&s.status!=='loading';}).length / d.sources.length * 100));
+      if (d.pending && d.pending.length) poll();
+      else setProgress(0, '刷新');
+      connectStream();   // 建立 SSE 长连接，此后新内容由服务端推送
+    }).catch(function(){
+      $('content').innerHTML =
+        '<div class="notice"><b>连不上聚合服务。</b><br><br>' +
+        '这个页面需要本地服务在后台抓取各站内容。在项目目录下执行：<br><br>' +
+        '<code>node server.js</code><br><br>' +
+        '然后访问 <code>http://127.0.0.1:5178</code>。' +
+        '（Windows 也可以直接双击目录里的 <code>启动.bat</code>）</div>';
+      $('refreshTxt').textContent = '刷新';
+    });
+  }
+
+  /* ---------------- 事件 ---------------- */
+  $('q').addEventListener('input', function(){ filter.q = this.value; render(); });
+
+  $('chips').addEventListener('click', function(e){
+    var b = e.target.closest('.chip');
+    if (!b) return;
+    var c = b.getAttribute('data-c');
+    if (c === 'all'){ filter.channels = []; }
+    else {
+      var i = filter.channels.indexOf(c);
+      if (i >= 0) filter.channels.splice(i,1); else filter.channels.push(c);
+    }
+    renderChips(); render();
+  });
+
+  $('srcList').addEventListener('change', function(e){
+    var cb = e.target.closest('input[data-s]');
+    if (!cb) return;
+    var id = cb.getAttribute('data-s');
+    if (cb.checked) filter.sources.add(id); else filter.sources.delete(id);
+    render();
+  });
+
+  $('allOn').addEventListener('click', function(){
+    filter.sources = new Set(DATA.sources.map(function(s){ return s.id; }));
+    renderSources(); render();
+  });
+  $('allOff').addEventListener('click', function(){
+    filter.sources = new Set();
+    renderSources(); render();
+  });
+  $('onlyDiverse').addEventListener('click', function(){
+    var keep = ['progressive','conservative','state','regional'];
+    filter.sources = new Set(DATA.sources.filter(function(s){
+      return keep.indexOf(s.lean) >= 0;
+    }).map(function(s){ return s.id; }));
+    renderSources(); render();
+  });
+
+  $('tabs').addEventListener('click', function(e){
+    var b = e.target.closest('button[data-v]');
+    if (!b) return;
+    filter.view = b.getAttribute('data-v');
+    [].forEach.call($('tabs').children, function(x){ x.classList.toggle('on', x === b); });
+    render();
+  });
+
+  $('btnRefresh').addEventListener('click', function(){
+    var btn = this;
+    btn.disabled = true;
+    setProgress(8, '抓取中');
+    fetchFeed(true).then(function(d){
+      renderChips();
+      if (d.pending && d.pending.length) poll();
+      else setProgress(0, '刷新');
+      btn.disabled = false;
+    }).catch(function(){
+      setProgress(0, '刷新');
+      btn.disabled = false;
+    });
+  });
+
+  $('btnExplore').addEventListener('click', pickExplore);
+
+  document.addEventListener('click', function(e){
+    // 茧房预警里的「去看另一面」按钮：切到该立场视角
+    var chip = e.target.closest('.echo-chip');
+    if (chip){
+      var want = chip.getAttribute('data-lean');
+      if (want){
+        filter.sources = new Set(DATA.sources.filter(function(s){ return s.lean === want; }).map(function(s){ return s.id; }));
+        renderSources(); render();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      return;
+    }
+    var again = e.target.closest('#btnExploreAgain');
+    if (again){ pickExplore(); return; }
+    var a = e.target.closest('a[data-id]');
+    if (a){
+      var id = a.getAttribute('data-id');
+      read[id] = Date.now();
+      var keys = Object.keys(read);
+      if (keys.length > 2000){
+        keys.sort(function(x,y){ return read[x] - read[y]; })
+            .slice(0, keys.length - 1500)
+            .forEach(function(k){ delete read[k]; });
+      }
+      try { localStorage.setItem(READ_KEY, JSON.stringify(read)); } catch(err){}
+      a.classList.add('read');
+    }
+  });
+
+  boot();
+})();
+</script>
+</body>
+</html>
