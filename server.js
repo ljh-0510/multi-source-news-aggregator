@@ -754,6 +754,14 @@ let lightCache = { at: 0, body: '' };
 /* ============================================================
  * 7. 启动
  * ============================================================ */
+/* 监听地址：默认只绑定本机回环（127.0.0.1），手机等局域网设备无法访问。
+   传入 --host=0.0.0.0 可开放到局域网，方便用手机在浏览器里看效果。
+   注意：开放后同一 Wi-Fi 下的设备都能访问本服务，仅建议在可信网络里临时使用。 */
+const HOST = (function () {
+  const m = process.argv.find(function (a) { return a.indexOf('--host=') === 0; });
+  return m ? m.split('=')[1] : '127.0.0.1';
+})();
+
 function start(port, attempt) {
   attempt = attempt || 0;
   const srv = http.createServer(handler);
@@ -765,10 +773,25 @@ function start(port, attempt) {
       process.exit(1);
     }
   });
-  srv.listen(port, '127.0.0.1', function () {
+  srv.listen(port, HOST, function () {
     console.log('');
     console.log('  多元信息台已启动');
     console.log('  →  http://127.0.0.1:' + port);
+    if (HOST !== '127.0.0.1' && HOST !== 'localhost') {
+      // 列出本机所有可用于局域网访问的 IPv4 地址
+      const nets = require('os').networkInterfaces();
+      const addrs = [];
+      Object.keys(nets).forEach(function (k) {
+        (nets[k] || []).forEach(function (n) {
+          if (n.family === 'IPv4' && !n.internal) addrs.push(n.address);
+        });
+      });
+      if (addrs.length) {
+        console.log('  →  局域网访问（手机 / 平板）：');
+        addrs.forEach(function (a) { console.log('       http://' + a + ':' + port); });
+      }
+      console.log('  ⚠ 已开放到局域网，同一 Wi-Fi 下的设备均可访问');
+    }
     console.log('  ' + SOURCES.length + ' 个信息源正在后台抓取，首次约需几秒…');
     console.log('  实时刷新：活跃源 3 分钟 / 其余源 15 分钟，失败源自动退避');
     console.log('  按 Ctrl+C 停止');
